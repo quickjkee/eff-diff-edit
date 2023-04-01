@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings(action="ignore")
 from cog import BasePredictor, Path, Input
 
-from diffusionclip import DiffusionCLIP
+from effdiff import DiffusionCLIP
 from main import dict2namespace
 
 
