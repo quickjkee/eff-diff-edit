@@ -51,7 +51,7 @@ def parse_args_and_config():
 
     # Train & Test
     parser.add_argument('--single_image', type=int, default=0, help='Whether to do single image editing')
-    parser.add_argument('--is_colab', type=int, default=0, help='Calculating on colab')
+    parser.add_argument('--own_training', type=int, default=0, help='Training on own images')
     parser.add_argument('--own_image', type=str, default=0, help='Name of own image')
     parser.add_argument('--number_of_image', type=int, default=0, help='Number of image from train dataset to edit')
     parser.add_argument('--fast_noising_train', type=int, default=1, help='Stochastic or deterministic noiser')
