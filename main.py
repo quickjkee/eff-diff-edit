@@ -53,7 +53,8 @@ def parse_args_and_config():
     parser.add_argument('--single_image', type=int, default=0, help='Whether to do single image editing')
     parser.add_argument('--own_image', type=int, default=0, help='Whether to use user own image')
     parser.add_argument('--number_of_image', type=int, default=0, help='Number of image from train dataset to edit')
-    parser.add_argument('--fast_noising', type=int, default=1, help='Stochastic or deterministic noiser')
+    parser.add_argument('--fast_noising_train', type=int, default=1, help='Stochastic or deterministic noiser')
+    parser.add_argument('--fast_noising_test', type=int, default=0, help='Stochastic or deterministic noiser')
     parser.add_argument('--do_train', type=int, default=1, help='Whether to train or not during CLIP finetuning')
     parser.add_argument('--do_test', type=int, default=1, help='Whether to test or not during CLIP finetuning')
     parser.add_argument('--save_train_image', type=int, default=1,
