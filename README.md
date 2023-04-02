@@ -18,11 +18,11 @@ We provide **two settings** for editing of images
 **1.** _Domain adaptation setting_
 
 It firstly fine-tunes diffusion model using about 50 images to learn transformation. 
-Then diffusion model applies learned transformation to any image. The entire procedure takes about **45 secs** (tested on A100)
+Then diffusion model applies learned transformation to any image. The entire procedure takes about **45 secs** and **7 GiB** (tested on NVIDIA A100)
 
 **2.** _Single image editing_
 
-Diffusion model fine-tunes using only single image provided by user. And then transforms the image. This setting takes about **4 secs**. But the first setting is more robust.
+Diffusion model fine-tunes using only single image provided by user. And then transforms the image. This setting takes about **4 secs**. 
 
 This work uses diffusion models pretrained on Celeba-HQ, LSUN-Church, AFHQ-Dog and ImageNET datasets.
 
