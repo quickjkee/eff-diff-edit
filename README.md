@@ -18,14 +18,20 @@ We provide **two settings** for editing of images
 **1.** _Domain adaptation setting_
 
 It firstly fine-tunes diffusion model using about 50 images to learn transformation. 
-Then diffusion model applies learned transformation to any image. The entire procedure takes about **1 min**
+Then diffusion model applies learned transformation to any image. The entire procedure takes about **45 secs** (tested on A100)
 
 **2.** _Single image editing_
 
-Diffusion model fine-tunes using only single image provided by user. And then transforms the image. This setting takes about **5 secs**. But the first setting is more robust.
+Diffusion model fine-tunes using only single image provided by user. And then transforms the image. This setting takes about **4 secs**. But the first setting is more robust.
+
+This work uses diffusion models pretrained on Celeba-HQ, LSUN-Church, AFHQ-Dog and ImageNET datasets.
 
 ## Getting started
 
+### 0. Colab notebook
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1rtu01eOB2gwr_j0gSyzXgkbMUKL_mNIx?usp=sharing)
+
+First of all, try to play with our **colab notebook**. It is single image editing in which you can edit your own images.
 ### 1. Preparation
 
 Install required dependencies
