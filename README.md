@@ -8,12 +8,21 @@ Official implementation [](https://arxiv.org/abs/2011.13786) by ...
 
 ## Overview
 
-This work addresses efficiency of the recent text-
-driven editing methods based on unconditional diffusion
-models and develop a novel algorithm that learns image ma-
-nipulations 4.5−10× faster and applies them 8× faster.
+This work addresses efficiency of the recent text-driven editing methods based on unconditional diffusion
+models and develop a novel algorithm that learns image manipulations 4.5−10× faster and applies them 8× faster.
 
 ![An image](./utils_imgs/overview-1.jpg)
+
+We provide **two settings** for editing of images
+
+**1.** _Domain adaptation setting_
+
+It firstly fine-tunes diffusion model using about 50 images to learn transformation. 
+Then diffusion model applies learned transformation to any image. The entire procedure takes about **1 min**
+
+**2.** _Single image editing_
+
+Diffusion model fine-tunes using only single image provided by user. And then transforms the image. This setting takes about **5 secs**. But the first setting is more robust.
 
 ## Getting started
 
