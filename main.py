@@ -41,7 +41,6 @@ def parse_args_and_config():
 
     # Sampling
     parser.add_argument('--t_0', type=int, default=400, help='Return step in [0, 1000)')
-    parser.add_argument('--wasted_mem_GiB', type=float, default=10, help='Allocated before 10000')
     parser.add_argument('--n_inv_step', type=int, default=40, help='# of steps during generative pross for inversion')
     parser.add_argument('--n_train_step', type=int, default=1, help='# of steps during generative pross for train')
     parser.add_argument('--n_test_step', type=int, default=40, help='# of steps during generative pross for test')
