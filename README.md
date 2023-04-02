@@ -31,7 +31,7 @@ This work uses diffusion models pretrained on Celeba-HQ, LSUN-Church, AFHQ-Dog a
 ### 0. Colab notebook
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1rtu01eOB2gwr_j0gSyzXgkbMUKL_mNIx?usp=sharing)
 
-First of all, try to play with our **colab notebook**. It is single image editing in which you can edit your own images.
+First of all, try to play with our **colab notebook**. It is single image setting in which you can edit your own images.
 ### 1. Preparation
 
 Install required dependencies
