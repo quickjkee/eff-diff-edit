@@ -6,11 +6,11 @@ Official implementation [](https://arxiv.org/abs/2011.13786) by ...
 
 ![An image](./utils_imgs/readme_faces.jpg)
 
----
 ## Description
+
 ![An image](./utils_imgs/overview-1.jpg)
+
 This work addresses efficiency of the recent text-
 driven editing methods based on unconditional diffusion
 models and develop a novel algorithm that learns image ma-
-nipulations 4.5−10× faster and applies them 8× faster. 
----
+nipulations 4.5−10× faster and applies them 8× faster.
