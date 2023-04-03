@@ -26,7 +26,7 @@ Then diffusion model applies learned transformation to any image. The entire pro
 
 Diffusion model fine-tunes using only one image provided by user. And then transforms the image. For new images a new fine-tuning is needed. This setting takes about **4 secs**. 
 
-This work uses diffusion models pretrained on Celeba-HQ, LSUN-Church, AFHQ-Dog and ImageNET datasets.
+This work uses diffusion models pretrained on **Celeba-HQ, LSUN-Church, AFHQ-Dog** and **ImageNet** datasets.
 
 ## Getting started
 
