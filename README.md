@@ -78,7 +78,7 @@ Below we provide running commands for different settings:
 
 * _Domain adaptation setting (**dataset training** and **dataset test**)_ \
 If you've downloaded specific dataset, then you can fine-tune your model using images from dataset. 
-And then apply fine-tuned model to images from test dataset. \
+And then apply fine-tuned model to images from a test dataset. \
 The following command uses 50 images for train and test on Celeba-HQ:
 
     ```
@@ -109,7 +109,7 @@ The following command uses 50 images for train and test on Celeba-HQ:
 * _Domain adaptation setting (**dataset training** and **own test**)_ \
 If you've downloaded specific dataset, but you want to test learned transformation on your own images
 you can change ```--own_test 0``` to ```--own_test all```. Before running put your own images in ```/imgs_for_test``` folder. 
-Moreover, you can test learned transformation only on a single image. To this end, change ```--own_test all``` to ```--own_test <your_name_image>```.
+Moreover, you can test learned transformation only on a single image. To this end, change ```--own_test all``` to ```--own_test <your_image_name>```.
   ```
   python main.py --clip_finetune      \
              --config celeba.yml      \
@@ -133,4 +133,60 @@ Moreover, you can test learned transformation only on a single image. To this en
              --id_loss_w 0.0          \
              --clip_loss_w 3          \
              --l1_loss_w 1.0 
+  ```
+  
+* _Domain adaptation setting (**own training** and **own test**)_\
+  If you want to fine-tune a diffusion model using your own images, then simply put them in ```/imgs_for_train``` folder
+  and change ```--own_training 0``` to ```--own_training 1```. Thus, here you do not need to download datasets.
+  ```
+  python main.py --clip_finetune      \
+             --config celeba.yml      \
+             --exp ./runs/test        \
+             --edit_attr makeup       \
+             --fast_noising_train 1   \
+             --fast_noising_test 1    \
+             --own_test all           \
+             --own_training 1         \
+             --single_image 0         \
+             --align_face 0           \
+             --n_train_img 50         \
+             --n_precomp_img 50       \
+             --n_test_img 50          \
+             --n_iter 5               \
+             --t_0 350                \
+             --n_inv_step 40          \
+             --n_train_step 6         \
+             --n_test_step 6          \
+             --lr_clip_finetune 6e-6  \
+             --id_loss_w 0.0          \
+             --clip_loss_w 3          \
+             --l1_loss_w 1.0 
+  ```
+
+* _Single image setting (**own image**)_\
+  To apply single image editing to your own image, firstly change ```--single_image 0``` to ```--single_image 1```. 
+  Then put the image in ```/imgs_for_test``` and fill ```--own_test <your_image_name>```. For instance, ```--own_test girl.png``` as follows:
+  ```
+  python main.py --clip_finetune        \
+               --config celeba.yml      \
+               --exp ./runs/test        \
+               --edit_attr makeup       \
+               --fast_noising_train 1   \
+               --fast_noising_test 1    \
+               --own_test girl.png      \
+               --own_training 1         \
+               --single_image 1         \
+               --align_face 1           \
+               --n_train_img 1          \
+               --n_precomp_img 1        \
+               --n_test_img 1           \
+               --n_iter 5               \
+               --t_0 350                \
+               --n_inv_step 40          \
+               --n_train_step 6         \
+               --n_test_step 6          \
+               --lr_clip_finetune 6e-6  \
+               --id_loss_w 0.0          \
+               --clip_loss_w 3          \
+               --l1_loss_w 1.0 
   ```
