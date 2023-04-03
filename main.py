@@ -8,7 +8,7 @@ import os
 import torch
 import numpy as np
 
-from effdiff import DiffusionCLIP
+from effdiff import EffDiff
 from configs.paths_config import HYBRID_MODEL_PATHS
 
 
@@ -173,7 +173,7 @@ def main():
     logging.info("Config =")
     print("<" * 80)
 
-    runner = DiffusionCLIP(args, config)
+    runner = EffDiff(args, config)
     try:
         if args.clip_finetune:
             runner.clip_finetune()

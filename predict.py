@@ -15,7 +15,7 @@ import warnings
 warnings.filterwarnings(action="ignore")
 from cog import BasePredictor, Path, Input
 
-from effdiff import DiffusionCLIP
+from effdiff import EffDiff
 from main import dict2namespace
 
 
@@ -152,7 +152,7 @@ class Predictor(BasePredictor):
         config.device = "cuda:0"
 
         # Edit
-        runner = DiffusionCLIP(args, config)
+        runner = EffDiff(args, config)
         runner.edit_one_image()
 
         out_image = Image.open(
