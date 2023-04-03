@@ -58,7 +58,7 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
   After downloading put them in ```/pretrained``` folder
 
 
-* _Download datasets (needed only for domain adaptation setting)_
+* _Download datasets_ (this part can be skipped if you have your own training, please see the second section for details)
    * For CelebA-HQ and AFHQ-Dog you can use the following code:    
   ```
   # CelebA-HQ 256x256
@@ -67,7 +67,7 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
   # AFHQ-Dog 256x256
   bash data_download.sh afhq .
   ```
-  * For LSUN-Church or ImageNet, you can download them from the linked original sources and put them in `/data/lsun` or `/data/imagenet`.
+  * For [LSUN-Church](https://www.yf.io/p/lsun) and [ImageNet](https://image-net.org/index.php), you can download them from the linked original sources and put them in `/data/lsun` or `/data/imagenet`.
 
 ### 2. Running
 
