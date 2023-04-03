@@ -36,7 +36,7 @@ This work uses diffusion models pretrained on Celeba-HQ, LSUN-Church, AFHQ-Dog a
 First of all, try to play with our **colab notebook**. It is single image setting in which you can edit your own images.
 ### 1. Preparation
 
-_Install required dependencies_
+* _Install required dependencies_
 ```
 # Clone the repo
 !git clone https://github.com/quickjkee/EffDiff
@@ -50,12 +50,48 @@ _Install required dependencies_
 conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSION>
 ```
 
-_Download pretrained diffusion models_
+* _Download pretrained diffusion models_
 
-* Pretrained diffuson models on CelebA-HQ, LSUN-Church are automatically downloaded in the code.
+  * Pretrained diffuson models on CelebA-HQ, LSUN-Church are automatically downloaded in the code.
 
-* For AFHQ-Dog and ImageNet please download corresponding models: [ImageNET](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffusion.pt), [AFHQ-Dog](https://onedrive.live.com/?authkey=%21AOIJGI8FUQXvFf8&cid=72419B431C262344&id=72419B431C262344%21103832&parId=72419B431C262344%21103807&o=OneUp).
-After downloading put them in ```/pretrained``` folder
+  * For AFHQ-Dog and ImageNet please download corresponding models: [ImageNET](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffusion.pt), [AFHQ-Dog](https://onedrive.live.com/?authkey=%21AOIJGI8FUQXvFf8&cid=72419B431C262344&id=72419B431C262344%21103832&parId=72419B431C262344%21103807&o=OneUp).
+  After downloading put them in ```/pretrained``` folder
 
 
-_Download datasets (only for domain adaptation setting)_
+* _Download datasets (needed only for domain adaptation setting)_
+   * For CelebA-HQ and AFHQ-Dog you can use the following code:    
+  ```
+  # CelebA-HQ 256x256
+  bash data_download.sh celeba_hq .
+  
+  # AFHQ-Dog 256x256
+  bash data_download.sh afhq .
+  ```
+  * For LSUN-Church or ImageNet, you can download them from the linked original sources and put them in `/data/lsun` or `/data/imagenet`.
+
+### 2. Running
+
+* _Domain adaptation setting_
+
+    ```
+  python main.py --clip_finetune        \
+                 --config celeba.yml      \
+                 --exp ./runs/test        \
+                 --edit_attr makeup       \
+                 --fast_noising_train 1   \
+                 --fast_noising_test 1    \
+                 --own_image 0            \
+                 --single_image 0         \
+                 --n_train_img 50         \
+                 --n_precomp_img 50       \
+                 --n_test_img 50          \
+                 --n_iter 5               \
+                 --t_0 350                \
+                 --n_inv_step 40          \
+                 --n_train_step 6         \
+                 --n_test_step 6          \
+                 --lr_clip_finetune 6e-6  \
+                 --id_loss_w 0.0          \
+                 --clip_loss_w 3          \
+                 --l1_loss_w 1.0 
+    ```
