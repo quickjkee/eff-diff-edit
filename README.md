@@ -70,28 +70,35 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
   * For [LSUN-Church](https://www.yf.io/p/lsun) and [ImageNet](https://image-net.org/index.php), you can download them from the linked original sources and put them in `/data/lsun` or `/data/imagenet`.
 
 ### 2. Running
+First of all, choose the config for insteresting domain: ```celeba/afhq/church/imagenet.yaml```\
+Below we provide running commands for different settings
 
-* _Domain adaptation setting_
+* _Domain adaptation setting (**dataset training** and **dataset test**)_ \
+If you've downloaded specific dataset, then you can fine-tune your model using images from dataset. 
+And then apply fine-tuned model to images from test dataset. \
+The following command uses 50 images for train and test on Celeba-HQ:
 
     ```
-  python main.py --clip_finetune        \
-                 --config celeba.yml      \
-                 --exp ./runs/test        \
-                 --edit_attr makeup       \
-                 --fast_noising_train 1   \
-                 --fast_noising_test 1    \
-                 --own_image 0            \
-                 --single_image 0         \
-                 --n_train_img 50         \
-                 --n_precomp_img 50       \
-                 --n_test_img 50          \
-                 --n_iter 5               \
-                 --t_0 350                \
-                 --n_inv_step 40          \
-                 --n_train_step 6         \
-                 --n_test_step 6          \
-                 --lr_clip_finetune 6e-6  \
-                 --id_loss_w 0.0          \
-                 --clip_loss_w 3          \
-                 --l1_loss_w 1.0 
+  python main.py --clip_finetune      \
+               --config celeba.yml      \
+               --exp ./runs/test        \
+               --edit_attr makeup       \
+               --fast_noising_train 1   \
+               --fast_noising_test 1    \
+               --own_test 0             \
+               --own_training 0         \
+               --single_image 0         \
+               --align_face 0           \
+               --n_train_img 50         \
+               --n_precomp_img 50       \
+               --n_test_img 50          \
+               --n_iter 5               \
+               --t_0 350                \
+               --n_inv_step 40          \
+               --n_train_step 6         \
+               --n_test_step 6          \
+               --lr_clip_finetune 6e-6  \
+               --id_loss_w 0.0          \
+               --clip_loss_w 3          \
+               --l1_loss_w 1.0 
     ```
