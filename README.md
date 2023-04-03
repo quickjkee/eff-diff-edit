@@ -58,7 +58,7 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
   After downloading put them in ```/pretrained``` folder
 
 
-* _Download datasets_ (this part can be skipped if you have your own training, please see the second section for details)
+* _Download datasets_ (this part can be skipped if you have your own training set, please see the second section for details)
    * For CelebA-HQ and AFHQ-Dog you can use the following code:    
   ```
   # CelebA-HQ 256x256
@@ -71,7 +71,10 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
 
 ### 2. Running
 First of all, choose the config for insteresting domain: ```celeba/afhq/church/imagenet.yaml```\
-Below we provide running commands for different settings
+Secondly, select editing attribute (the editting attributes for each domain can be found here)\
+Finally, check out the descriptions of running options here.
+
+Below we provide running commands for different settings:
 
 * _Domain adaptation setting (**dataset training** and **dataset test**)_ \
 If you've downloaded specific dataset, then you can fine-tune your model using images from dataset. 
@@ -102,3 +105,32 @@ The following command uses 50 images for train and test on Celeba-HQ:
                --clip_loss_w 3          \
                --l1_loss_w 1.0 
     ```
+
+* _Domain adaptation setting (**dataset training** and **own test**)_ \
+If you've downloaded specific dataset, but you want to test learned transformation on your own images
+you can change ```--own_test 0``` to ```--own_test all```. Before running put your own images in ```/imgs_for_test``` folder. 
+Moreover, you can test learned transformation only on a single image. To this end, change ```--own_test all``` to ```--own_test <your_name_image>```.
+  ```
+  python main.py --clip_finetune      \
+             --config celeba.yml      \
+             --exp ./runs/test        \
+             --edit_attr makeup       \
+             --fast_noising_train 1   \
+             --fast_noising_test 1    \
+             --own_test all           \
+             --own_training 0         \
+             --single_image 0         \
+             --align_face 0           \
+             --n_train_img 50         \
+             --n_precomp_img 50       \
+             --n_test_img 50          \
+             --n_iter 5               \
+             --t_0 350                \
+             --n_inv_step 40          \
+             --n_train_step 6         \
+             --n_test_step 6          \
+             --lr_clip_finetune 6e-6  \
+             --id_loss_w 0.0          \
+             --clip_loss_w 3          \
+             --l1_loss_w 1.0 
+  ```
