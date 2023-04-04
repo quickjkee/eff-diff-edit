@@ -19,7 +19,7 @@ SRC_TRG_TXT_DIC = {
     'angry': (['face'],
               ['angry face']),
     'surprised': (['face'],
-                  ['very surprised face']),
+                  ['surprised face']),
     'smiling': (['face'],
                 ['smiling face']),
     'blond_hair': (['person'],
