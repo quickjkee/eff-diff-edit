@@ -1,0 +1,79 @@
+Usage: main.py [OPTIONS]
+
+  Fine-tuning a diffusion model on certain domain using chosen editing attribute
+
+Options:
+  --config STR                    One of the four configs:
+                                  celeba.yml, afhq.yml, church.yml, imagenet.yaml
+                                  [required]
+
+  --exp PATH                      Output directory for transformed images
+                                  [required]
+
+  --edit_attr STR                 Editing attribute, full list can be found in '/utils/text_dic.py'
+                                  [required]
+
+  --fast_noising_train BOOL       Stochastic or deterministic encoding (1 - stoch, 0 - determ)
+                                  Deterministic uses neural network to encode images.
+                                  Thus, deterministic works much longer on large dataset.
+                                  We recommend to use stochastic encoding for training images
+
+  --fast_noising_test BOOL        Whether to use stochastic or deterministic encoding for test data
+                                  If your test set is large, we recommend to use stochastic enc (1)
+
+  --t0 INT                        Degree of noise to encode an image (possible values: 0 - 999).
+                                  Higher values provide stronger transformations.
+                                  - For stochastic encoding recommended values
+                                    [200-350] - for shallow transformations (e.g, makeup)
+                                    [350-500] - for strong transformations (e.g., zombie)
+                                  - For deterministic encoding:
+                                    [300-500] - for shallow transformations
+                                    [450-700] - for strong transformations
+                                  [required]
+
+  --n_inv_step INT                If you're using deterministic encoding, this option gives number
+                                  of neural network propagation to encode an image (DDIM encoding)
+                                  Recommended value - 40.
+
+  --n_test_step INT               Number of DDIM steps to generate an image from encoding
+                                  Recommended values are from 1 to 6.
+                                  [required]
+
+  --own_test STR                  Whether to use your own test set
+                                  Possible values - [0, all, <your_image_name>]
+                                  - 0 : do not use own test (use test images from dataset)
+                                  - all : use all images from '/imgs_for_test' folder
+                                  - <your_image_name> : use only one image from '/imgs_for_test'
+                                  with <your_image_name>
+                                  [required]
+
+  --own_training BOOL             Whether to use your own training set
+                                  Possible values - [0, 1]
+                                  - 0 : do not use own training (use training images from dataset)
+                                  - 1 : use all images from '/imgs_for_train' folder for training
+                                  [required]
+
+  --single_image BOOL             Working setting: domain adaptation (0) or single image editing (1)
+                                  - 1 : single image editing applies to your own image.
+                                  You have to put the image in '/imgs_for_test'
+                                  and fill --own_test <your_image_name>
+                                  - 0 : domain adaptation setting can be run using own images
+                                  or images from dataset.
+                                  [required]
+
+  --align_face BOOL               Whether to use face alignment.
+                                  We recommend to use this option with your own images.
+                                  [required]
+
+  --n_train_img INT               Number of training images from a dataset
+                                  If you're using images from dataset for training,
+                                  then write the number of desired images (usually, 50).
+                                  If you're using your own training, then this option can be skipped
+
+  --n_test_img INT                Number of test images from a dataset
+                                  If you're using your own test, then this option can be skipped
+
+  --n_iter INT                    Number of fine-tuning iterations.
+                                  For domain adaptation [from 1 to 10]
+                                  For single image editing [from 3 to 20]
+                                  [required]
