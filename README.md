@@ -71,7 +71,7 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
 
 ### 2. Running
 First of all, choose the config for insteresting domain: ```celeba/afhq/church/imagenet.yaml```\
-Secondly, select editing attribute (the editting attributes for each domain can be found here)\
+Secondly, select editing attribute (the editting attributes for each domain can be found [here](/utils/text_dic.py))\
 Finally, check out the descriptions of running options [here](/docs/clip-finetune-help).
 
 Below we provide running commands for different settings:
