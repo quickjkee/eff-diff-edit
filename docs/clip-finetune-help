@@ -37,6 +37,8 @@ Options:
 
   --n_test_step INT               Number of DDIM steps to generate an image from encoding
                                   Recommended values are from 1 to 6.
+                                  Smaller values sometimes provide less artifacts,
+                                  but higher values can give stronger transformations.
                                   [required]
 
   --own_test STR                  Whether to use your own test set
@@ -77,3 +79,12 @@ Options:
                                   For domain adaptation [from 1 to 10]
                                   For single image editing [from 3 to 20]
                                   [required]
+
+  --lr_clip_finetune FLOAT        Learning rate.
+                                  Recommended values are from 1e-6 to 2e-5.
+                                  We find that for stronger transformations higher lr is better.
+
+  --l1_loss_w FLOAT               Regularization coefficient.
+                                  Recommended values are from 0 to 10.
+                                  If you find artifacts on your transformed image, try to increase
+                                  this value.
