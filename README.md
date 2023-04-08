@@ -1,8 +1,7 @@
 # Towards Real-time Text-driven Image Manipulation with Unconditional Diffusion Models
+[[`Paper`](https://arxiv.org/abs/2011.13786)]
 
-Official implementation [](https://arxiv.org/abs/2011.13786) by ...
-
-This code based on [DiffusionCLIP](https://github.com/gwang-kim/DiffusionCLIP).
+This code is based on [DiffusionCLIP](https://github.com/gwang-kim/DiffusionCLIP).
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1rtu01eOB2gwr_j0gSyzXgkbMUKL_mNIx?usp=sharing)
 
@@ -11,35 +10,39 @@ This code based on [DiffusionCLIP](https://github.com/gwang-kim/DiffusionCLIP).
 ## Overview
 
 This work addresses efficiency of the recent text-driven editing methods based on unconditional diffusion
-models and develop a novel algorithm that learns image manipulations 4.5−10× faster and applies them 8× faster.
+models and provides the algorithm that learns image manipulations 4.5−10× faster and applies them 8× faster than DiffusionCLIP.
 
 ![An image](./utils_imgs/overview-1.jpg)
 
-We provide **two settings** for editing of images
+We provide the following **two settings** for image manipulation:
 
-**1.** _Domain adaptation setting_
+**1.** _Prelearned image manipulations_
 
-It firstly fine-tunes diffusion model using set of images (about 50 examples) to learn transformation. 
-Then diffusion model applies learned transformation to any image. The entire procedure takes about **45 secs** and **7 GiB** (tested on NVIDIA A100)
+The pretrained diffusion model is adapted to the given textual transform on 50 images. 
+Then, you can apply the learned transform to your images.
+The entire procedure takes about **~45 secs** on NVIDIA A100.
 
-**2.** _Single image editing_
+**2.** _Single-image editing_
 
-Diffusion model fine-tunes using only one image provided by user. And then transforms the image. For new images a new fine-tuning is needed. This setting takes about **4 secs**. 
+The pretrained diffusion model is adapted to your text description and image on the fly.
+This setting takes about **~4 secs** on NVIDIA A100.
 
-This work uses diffusion models pretrained on **Celeba-HQ, LSUN-Church, AFHQ-Dog** and **ImageNet** datasets.
+This work uses unconditional diffusion models pretrained on the **CelebA-HQ-256, LSUN-Church-256, AFHQ-Dog-256** and **ImageNet-512** datasets.
 
 ## Getting started
 
 ### 0. Colab notebook
+
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1rtu01eOB2gwr_j0gSyzXgkbMUKL_mNIx?usp=sharing)
 
-First of all, try to play with our **colab notebook**. It is single image setting in which you can edit your own images.
+This **colab notebook** demonstrates the single-image editing setting. You are welcome to edit your images for any text descriptions.
+
 ### 1. Preparation
 
 * _Install required dependencies_
 ```
 # Clone the repo
-!git clone https://github.com/quickjkee/EffDiff
+!git clone https://github.com/quickjkee/eff-diff-edit
 
 # Install dependencies
 !pip install ftfy regex tqdm
@@ -52,10 +55,9 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
 
 * _Download pretrained diffusion models_
 
-  * Pretrained diffuson models on CelebA-HQ, LSUN-Church are automatically downloaded in the code.
+  * Pretrained diffusion models on CelebA-HQ-256, LSUN-Church-256 are automatically downloaded in the code.
 
-  * For AFHQ-Dog and ImageNet please download corresponding models: [ImageNET](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffusion.pt), [AFHQ-Dog](https://onedrive.live.com/?authkey=%21AOIJGI8FUQXvFf8&cid=72419B431C262344&id=72419B431C262344%21103832&parId=72419B431C262344%21103807&o=OneUp).
-  After downloading put them in ```/pretrained``` folder
+  * For AFHQ-Dog-256 and ImageNet-512, please download the corresponding models ([ImageNet](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffusion.pt), [AFHQ-Dog](https://onedrive.live.com/?authkey=%21AOIJGI8FUQXvFf8&cid=72419B431C262344&id=72419B431C262344%21103832&parId=72419B431C262344%21103807&o=OneUp)) and put them into the ```/pretrained``` folder
 
 
 * _Download datasets_ (this part can be skipped if you have your own training set, please see the second section for details)
@@ -67,20 +69,20 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
   # AFHQ-Dog 256x256
   bash data_download.sh afhq .
   ```
-  * For [LSUN-Church](https://www.yf.io/p/lsun) and [ImageNet](https://image-net.org/index.php), you can download them from the linked original sources and put them in `/data/lsun` or `/data/imagenet`.
+  * For [LSUN-Church](https://www.yf.io/p/lsun) and [ImageNet](https://image-net.org/index.php), you can download them from the original sources and put them into `/data/lsun` or `/data/imagenet`.
 
 ### 2. Running
-First of all, choose the config for insteresting domain: ```celeba/afhq/church/imagenet.yaml```\
-Secondly, select editing attribute (the editting attributes for each domain can be found [here](/utils/text_dic.py))\
-(note that you can change this file adding your own transformations)\
-Finally, check out the descriptions of running options [here](/docs/clip-finetune-help).
+1. Select the config for the particular dataset: ```celeba/afhq/church/imagenet.yaml```.
+2. Select the desired manipulation from the list. The list of available textual transforms for each dataset is [here](/utils/text_dic.py).\
+Note that you can also add your own transforms to this file.
+3. Check out the descriptions for the available options [here](/docs/clip-finetune-help).
 
 Below we provide running commands for different settings:
 
-* _Domain adaptation setting (**dataset training** and **dataset test**)_ \
-If you've downloaded specific dataset, then you can fine-tune your model using images from dataset. 
-And then apply fine-tuned model to images from a test dataset. \
-The following command uses 50 images for train and test on Celeba-HQ:
+* _Prelearned image manipulations (**dataset training** and **dataset test**)_ \
+If you've already downloaded a specific dataset then you can adapt your model using images from the dataset. 
+Then, it applies the finetuned model to the images from the test set. \
+The following command uses 50 CelebA-HQ images for training:
 
     ```
   python main.py --clip_finetune      \
@@ -107,10 +109,10 @@ The following command uses 50 images for train and test on Celeba-HQ:
                --l1_loss_w 1.0 
     ```
 
-* _Domain adaptation setting (**dataset training** and **own test**)_ \
-If you've downloaded specific dataset, but you want to test learned transformation on your own images
-you can change ```--own_test 0``` to ```--own_test all```. Before running put your own images in ```/imgs_for_test``` folder. 
-Moreover, you can test learned transformation only on a single image. To this end, change ```--own_test all``` to ```--own_test <your_image_name>```.
+* _Prelearned image manipulations (**dataset training** and **own test**)_ \
+If you've downloaded a specific dataset but want to test the learned transforms on your own images
+you can change ```--own_test 0``` to ```--own_test all```. Before running, put your own images into the ```/imgs_for_test``` folder. 
+Moreover, you can test the learned transform only on a single image: change ```--own_test all``` to ```--own_test <your_image_name>```.
   ```
   python main.py --clip_finetune      \
              --config celeba.yml      \
@@ -136,9 +138,9 @@ Moreover, you can test learned transformation only on a single image. To this en
              --l1_loss_w 1.0 
   ```
   
-* _Domain adaptation setting (**own training** and **own test**)_\
-  If you want to fine-tune a diffusion model using your own images, then simply put them in ```/imgs_for_train``` folder
-  and change ```--own_training 0``` to ```--own_training 1```. Thus, here you do not need to download datasets.
+* _Prelearned image manipulations  (**own training** and **own test**)_\
+  If you want to adapt a diffusion model using your own images then simply put them into the ```/imgs_for_train``` folder
+  and change ```--own_training 0``` to ```--own_training 1```. In this case, you do not need to download any datasets.
   ```
   python main.py --clip_finetune      \
              --config celeba.yml      \
@@ -164,9 +166,9 @@ Moreover, you can test learned transformation only on a single image. To this en
              --l1_loss_w 1.0 
   ```
 
-* _Single image setting (**own image**)_\
-  To apply single image editing to your own image, firstly change ```--single_image 0``` to ```--single_image 1```. 
-  Then put the image in ```/imgs_for_test``` and fill ```--own_test <your_image_name>```. For instance, ```--own_test girl.png``` as follows:
+* _Single-image editing (**own image**)_\
+  To transform your own image in single image editing, change ```--single_image 0``` to ```--single_image 1```. 
+  Then, put the image into ```/imgs_for_test``` and set up ```--own_test <your_image_name>```. For instance, ```--own_test girl.png``` as follows:
   ```
   python main.py --clip_finetune        \
                --config celeba.yml      \
