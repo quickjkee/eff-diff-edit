@@ -1,58 +1,55 @@
 Usage: main.py [OPTIONS]
 
-  Fine-tuning a diffusion model on certain domain using chosen editing attribute
+  Text-driven diffusion model adaptation to the selected image manipulation.
 
 Options:
-  --config STR                    One of the four configs:
+  --config STR                    One of the available configs:
                                   celeba.yml, afhq.yml, church.yml, imagenet.yaml
                                   [required]
 
   --exp PATH                      Output directory for transformed images
                                   [required]
 
-  --edit_attr STR                 Editing attribute, full list can be found in '/utils/text_dic.py'
+  --edit_attr STR                 Editing attribute, the full list can be found in './utils/text_dic.py'
                                   [required]
 
-  --fast_noising_train BOOL       Stochastic or deterministic encoding (1 - stoch, 0 - determ)
-                                  Deterministic uses neural network to encode images.
-                                  Thus, deterministic works much longer on large dataset.
-                                  We recommend to use stochastic encoding for training images
+  --fast_noising_train BOOL       Whether to use stochastic or deterministic encoding for training data (1 - stoch, 0 - determ)
+                                  We recommend using stochastic encoding when many training images are used.
 
-  --fast_noising_test BOOL        Whether to use stochastic or deterministic encoding for test data
-                                  If your test set is large, we recommend to use stochastic enc (1)
+  --fast_noising_test BOOL        Whether to use stochastic or deterministic encoding for test data (1 - stoch, 0 - determ)
+                                  To process many test images, we recommend using stochastic encoding.
 
-  --t0 INT                        Degree of noise to encode an image (possible values: 0 - 999).
-                                  Higher values provide stronger transformations.
+  --t0 INT                        Diffusion time step to encode an image (possible values: 0 - 999).
+                                  Higher values are used for stronger transforms.
                                   - For stochastic encoding recommended values
-                                    [200-350] - for shallow transformations (e.g, makeup)
-                                    [350-500] - for strong transformations (e.g., zombie)
+                                    [200-350] - for shallow transforms (e.g, makeup)
+                                    [350-500] - for strong transforms (e.g., zombie)
                                   - For deterministic encoding:
-                                    [300-500] - for shallow transformations
-                                    [450-700] - for strong transformations
+                                    [300-500] - for shallow transforms
+                                    [450-700] - for strong transforms
                                   [required]
 
-  --n_inv_step INT                If you're using deterministic encoding, this option gives number
-                                  of neural network propagation to encode an image (DDIM encoding)
-                                  Recommended value - 40.
+  --n_inv_step INT                If deterministic encoding is used, this option sets up a number
+                                  of DDIM steps to encode an image. Recommended value - 40.
 
-  --n_test_step INT               Number of DDIM steps to generate an image from encoding
+  --n_test_step INT               Number of DDIM steps to decode an encoded image
                                   Recommended values are from 1 to 6.
-                                  Smaller values sometimes provide less artifacts,
-                                  but higher values can give stronger transformations.
+                                  Smaller values sometimes bring less artifacts.
+                                  Higher values can produce stronger transforms.
                                   [required]
 
-  --own_test STR                  Whether to use your own test set
+  --own_test STR                  Whether to use your own test images
                                   Possible values - [0, all, <your_image_name>]
-                                  - 0 : do not use own test (use test images from dataset)
-                                  - all : use all images from '/imgs_for_test' folder
-                                  - <your_image_name> : use only one image from '/imgs_for_test'
+                                  - 0 : use test images from one of the standard datasets
+                                  - all : use all images from the './imgs_for_test' folder
+                                  - <your_image_name> : use only one image from './imgs_for_test'
                                   with <your_image_name>
                                   [required]
 
   --own_training BOOL             Whether to use your own training set
                                   Possible values - [0, 1]
-                                  - 0 : do not use own training (use training images from dataset)
-                                  - 1 : use all images from '/imgs_for_train' folder for training
+                                  - 0 : use training images from one of the standard datasets
+                                  - 1 : use all images from the './imgs_for_train' folder for training
                                   [required]
 
   --single_image BOOL             Working setting: domain adaptation (0) or single image editing (1)
@@ -63,8 +60,8 @@ Options:
                                   or images from dataset.
                                   [required]
 
-  --align_face BOOL               Whether to use face alignment.
-                                  We recommend to use this option with your own images.
+  --align_face BOOL               Whether to use the face alignment.
+                                  We recommend using this option with your own images.
                                   [required]
 
   --n_train_img INT               Number of training images from a dataset
@@ -82,9 +79,8 @@ Options:
 
   --lr_clip_finetune FLOAT        Learning rate.
                                   Recommended values are from 1e-6 to 2e-5.
-                                  We find that for stronger transformations higher lr is better.
+                                  We find that higher lr is preferable for stronger transforms.
 
   --l1_loss_w FLOAT               Regularization coefficient.
                                   Recommended values are from 0 to 10.
-                                  If you find artifacts on your transformed image, try to increase
-                                  this value.
+                                  Higher values can reduce artifacts and text-irrelevant changes.
