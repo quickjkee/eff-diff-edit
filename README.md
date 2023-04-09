@@ -31,11 +31,12 @@ This work uses unconditional diffusion models pretrained on the **CelebA-HQ-256,
 
 ## Getting started
 
-### 0. Colab notebook
+### 0. Colab notebook for single-image editing
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1rtu01eOB2gwr_j0gSyzXgkbMUKL_mNIx?usp=sharing)
 
-This **colab notebook** demonstrates the single-image editing setting. You are welcome to edit your images for any text descriptions.
+This notebook provides a tool for single-image editing using our approach. You are welcome to edit your images according to any textual transform.
+Please, pay close attention to the hyperparameter values.
 
 ### 1. Preparation
 
@@ -57,7 +58,7 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
 
   * Pretrained diffusion models on CelebA-HQ-256, LSUN-Church-256 are automatically downloaded in the code.
 
-  * For AFHQ-Dog-256 and ImageNet-512, please download the corresponding models ([ImageNet](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffusion.pt), [AFHQ-Dog](https://onedrive.live.com/?authkey=%21AOIJGI8FUQXvFf8&cid=72419B431C262344&id=72419B431C262344%21103832&parId=72419B431C262344%21103807&o=OneUp)) and put them into the ```/pretrained``` folder
+  * For AFHQ-Dog-256 and ImageNet-512, please download the corresponding models ([ImageNet](https://openaipublic.blob.core.windows.net/diffusion/jul-2021/512x512_diffusion.pt), [AFHQ-Dog](https://onedrive.live.com/?authkey=%21AOIJGI8FUQXvFf8&cid=72419B431C262344&id=72419B431C262344%21103832&parId=72419B431C262344%21103807&o=OneUp)) and put them into the ```./pretrained``` folder
 
 
 * _Download datasets_ (this part can be skipped if you have your own training set, please see the second section for details)
@@ -69,22 +70,21 @@ conda install --yes -c pytorch pytorch=1.7.1 torchvision cudatoolkit=<CUDA_VERSI
   # AFHQ-Dog 256x256
   bash data_download.sh afhq .
   ```
-  * For [LSUN-Church](https://www.yf.io/p/lsun) and [ImageNet](https://image-net.org/index.php), you can download them from the original sources and put them into `/data/lsun` or `/data/imagenet`.
+  * For [LSUN-Church](https://www.yf.io/p/lsun) and [ImageNet](https://image-net.org/index.php), you can download them from the original sources and put them into `./data/lsun` or `./data/imagenet`.
 
 ### 2. Running
-1. Select the config for the particular dataset: ```celeba/afhq/church/imagenet.yaml```.
+1. Select the config for the particular dataset: ```celeba.yaml / afhq.yaml / church.yaml / imagenet.yaml```.
 2. Select the desired manipulation from the list. The list of available textual transforms for each dataset is [here](/utils/text_dic.py).\
 Note that you can also add your own transforms to this file.
 3. Check out the descriptions for the available options [here](/docs/clip-finetune-help).
 
-Below we provide running commands for different settings:
+Below we provide the commands for different settings:
 
 * _Prelearned image manipulations (**dataset training** and **dataset test**)_ \
-If you've already downloaded a specific dataset then you can adapt your model using images from the dataset. 
-Then, it applies the finetuned model to the images from the test set. \
-The following command uses 50 CelebA-HQ images for training:
+This command adapts the pretrained model using images from the training set and applies the learned transform to the test images. 
+The following command uses 50 CelebA-HQ images for training and evaluation:
 
-    ```
+  ```
   python main.py --clip_finetune      \
                --config celeba.yml      \
                --exp ./runs/test        \
@@ -110,10 +110,11 @@ The following command uses 50 CelebA-HQ images for training:
     ```
 
 * _Prelearned image manipulations (**dataset training** and **own test**)_ \
-If you've downloaded a specific dataset but want to test the learned transforms on your own images
-you can change ```--own_test 0``` to ```--own_test all```. Before running, put your own images into the ```/imgs_for_test``` folder. 
-Moreover, you can test the learned transform only on a single image: change ```--own_test all``` to ```--own_test <your_image_name>```.
-  ```
+This command adapts the pretrained model using images from the training set and applies the learned transform to your own images. 
+Basically, one needs to change ```--own_test 0``` to ```--own_test all```. 
+Before running, put your images into the ```./imgs_for_test``` folder. 
+Moreover, you can evaluate the learned transform on a single image: change ```--own_test all``` to ```--own_test <your_image_name>```.
+ ```
   python main.py --clip_finetune      \
              --config celeba.yml      \
              --exp ./runs/test        \
@@ -139,8 +140,8 @@ Moreover, you can test the learned transform only on a single image: change ```-
   ```
   
 * _Prelearned image manipulations  (**own training** and **own test**)_\
-  If you want to adapt a diffusion model using your own images then simply put them into the ```/imgs_for_train``` folder
-  and change ```--own_training 0``` to ```--own_training 1```. In this case, you do not need to download any datasets.
+  If you want to adapt a diffusion model on your own dataset then simply put them into the ```./imgs_for_train``` folder
+  and change ```--own_training 0``` to ```--own_training 1```. In this case, you do not need to download any datasets above.
   ```
   python main.py --clip_finetune      \
              --config celeba.yml      \
@@ -168,7 +169,7 @@ Moreover, you can test the learned transform only on a single image: change ```-
 
 * _Single-image editing (**own image**)_\
   To transform your own image in single image editing, change ```--single_image 0``` to ```--single_image 1```. 
-  Then, put the image into ```/imgs_for_test``` and set up ```--own_test <your_image_name>```. For instance, ```--own_test girl.png``` as follows:
+  Then, put the image into ```./imgs_for_test``` and set up ```--own_test <your_image_name>```. For instance, ```--own_test girl.png``` as in the following example:
   ```
   python main.py --clip_finetune        \
                --config celeba.yml      \
