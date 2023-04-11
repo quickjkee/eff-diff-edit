@@ -1,5 +1,5 @@
 # Towards Real-time Text-driven Image Manipulation with Unconditional Diffusion Models
-[[`Paper`](https://arxiv.org/abs/2011.13786)]
+[[`Paper`](https://arxiv.org/pdf/2304.04344v1.pdf)]
 
 This code is based on [DiffusionCLIP](https://github.com/gwang-kim/DiffusionCLIP).
 
